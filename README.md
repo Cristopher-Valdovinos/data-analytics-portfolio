@@ -26,10 +26,10 @@ Soy **Cristopher Valdovinos**, Ingeniero Comercial titulado especializado en **D
 * **Descripción:** Modelado relacional, cálculo de margen bruto, segmentación Pareto de clientes y análisis mensual de ticket promedio para control de gestión comercial.
 * **Carpeta:** [`/proyectos/analisis-comercial-sql/`](proyectos/analisis-comercial-sql/)
 
-### 2. [Nombre del Proyecto 2: Automatización y Limpieza con Python]
-* **Tecnologías:** Python (Pandas), Jupyter Notebooks
-* **Descripción:** Pipeline de limpieza de datos crudos, imputación de nulos y generación de reportes consolidados.
-* **Carpeta:** `/proyectos/pipeline-datos/`
+### 2. [Pipeline ETL y Limpieza Automatizada con Python](proyectos/etl-limpieza-python/)
+* **Tecnologías:** Python (Pandas, NumPy)
+* **Descripción:** Depuración de datos transaccionales, normalización de strings, manejo de nulos y generación de reportería agrupada para control de gestión.
+* **Carpeta:** [`/proyectos/etl-limpieza-python/`](proyectos/etl-limpieza-python/)
 
 ---
 
