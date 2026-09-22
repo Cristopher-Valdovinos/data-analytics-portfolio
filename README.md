@@ -21,10 +21,10 @@ Soy **Cristopher Valdovinos**, Ingeniero Comercial titulado especializado en **D
 
 ## 📂 Proyectos Destacados
 
-### 1. [Nombre del Proyecto 1: Análisis de Ventas / Clientes]
-* **Tecnologías:** SQL, Power BI
-* **Descripción:** Extracción y modelado de datos para evaluar rendimiento comercial, ticket promedio y segmentación de clientes.
-* **Carpeta:** `/proyectos/analisis-comercial/`
+### 1. [Análisis Comercial, Rentabilidad y KPIs con SQL](proyectos/analisis-comercial-sql/)
+* **Tecnologías:** SQL (MySQL)
+* **Descripción:** Modelado relacional, cálculo de margen bruto, segmentación Pareto de clientes y análisis mensual de ticket promedio para control de gestión comercial.
+* **Carpeta:** [`/proyectos/analisis-comercial-sql/`](proyectos/analisis-comercial-sql/)
 
 ### 2. [Nombre del Proyecto 2: Automatización y Limpieza con Python]
 * **Tecnologías:** Python (Pandas), Jupyter Notebooks
