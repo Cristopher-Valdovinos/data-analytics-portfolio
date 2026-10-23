@@ -3,7 +3,7 @@
 Bienvenido a mi repositorio de portafolio de análisis de datos y control de gestión.
 
 ## Sobre mí
-Soy **Cristopher Valdovinos**, Ingeniero Comercial titulado especializado en **Data Analytics**, **Business Intelligence** y **Control de Gestión**. Cuento con experiencia consolidando, limpiando y modelando datos para construir dashboards, reportes e indicadores clave (KPIs) orientados a la toma de decisiones estratégicas.
+Soy **Cristopher Valdovinos**, Ingeniero Comercial titulado especializado en **Data Analytics**, **Business Intelligence** y **Reporting**. Cuento con experiencia consolidando, limpiando y modelando datos para construir dashboards, reportes e indicadores clave (KPIs) orientados a la toma de decisiones estratégicas.
 
 * 📍 **Ubicación:** Santiago, Chile
 * 💼 **LinkedIn:** [linkedin.com/in/cristopher-valdovinos](https://www.linkedin.com/in/cristopher-valdovinos)
