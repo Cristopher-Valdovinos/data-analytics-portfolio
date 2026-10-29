@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS clientes (
     payment_delay_count_90d TINYINT UNSIGNED NOT NULL,
     days_since_last_purchase SMALLINT UNSIGNED NOT NULL,
     churned TINYINT NOT NULL,
+    CONSTRAINT chk_clientes_tenure CHECK (tenure_months BETWEEN 1 AND 60),
+    CONSTRAINT chk_clientes_monthly_fee CHECK (monthly_fee_clp > 0),
     CONSTRAINT chk_clientes_churned CHECK (churned IN (0, 1))
 );
 
@@ -53,7 +55,25 @@ FROM clientes
 GROUP BY tramo_antiguedad
 ORDER BY tramo_antiguedad;
 
--- 4. Clientes para revisión comercial: reglas simples, transparentes y no predictivas
+-- 4. Churn por cantidad de retrasos de pago en los últimos 90 días
+SELECT
+    CASE
+        WHEN payment_delay_count_90d = 0 THEN '0 retrasos'
+        WHEN payment_delay_count_90d = 1 THEN '1 retraso'
+        ELSE '2+ retrasos'
+    END AS tramo_retrasos_pago,
+    COUNT(*) AS clientes,
+    SUM(churned) AS clientes_churn,
+    ROUND(100.0 * SUM(churned) / NULLIF(COUNT(*), 0), 2) AS tasa_churn_pct
+FROM clientes
+GROUP BY tramo_retrasos_pago
+ORDER BY CASE tramo_retrasos_pago
+    WHEN '0 retrasos' THEN 1
+    WHEN '1 retraso' THEN 2
+    ELSE 3
+END;
+
+-- 5. Clientes para revisión comercial: reglas simples, transparentes y no predictivas
 SELECT
     customer_id, plan, tenure_months, monthly_fee_clp,
     support_tickets_90d, payment_delay_count_90d, days_since_last_purchase,
