@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Dashboard demostrativo de retención y fuga de clientes, desarrollado con Python, Pandas y SQL.">
+<title>Customer Retention | Portfolio de Data Analytics</title>
+<style>
+:root{color-scheme:light;--bg:#f3f6fb;--panel:#fff;--ink:#17243a;--muted:#68758b;--line:#e1e7f0;--blue:#315ee8;--teal:#138a83;--amber:#b96b16;--soft-blue:#edf2ff;--soft-teal:#e8f7f4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1180px;margin:auto;padding:28px 22px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:26px}.brand{font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}.tag{border:1px solid #cbd5e6;border-radius:99px;padding:7px 11px;color:#526078;font-size:.78rem;font-weight:700}
+h1{font-size:clamp(2rem,4vw,3rem);line-height:1.08;letter-spacing:-.045em;margin:0 0 12px;max-width:760px}h2{font-size:1rem;letter-spacing:-.01em;margin:0 0 4px}.intro{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:24px;align-items:end;margin-bottom:25px}.sub{max-width:700px;color:var(--muted);font-size:1rem;margin:0}.period{border-left:3px solid var(--blue);padding:4px 0 4px 14px;color:var(--muted);font-size:.84rem}.period strong{display:block;color:var(--ink);font-size:.94rem}
+.note{display:flex;gap:12px;align-items:flex-start;background:#fff8e9;border:1px solid #f0d9a8;border-radius:12px;padding:13px 16px;margin:20px 0 22px;color:#72501d;font-size:.87rem}.note b{color:#53380d;white-space:nowrap}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 18px}.panel,.kpi{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 14px #243b6108}.kpi{padding:19px}.kpi .label{font-size:.82rem;color:var(--muted);font-weight:650}.value{font-size:clamp(1.55rem,2.6vw,2.1rem);font-weight:780;letter-spacing:-.055em;margin:8px 0 3px;line-height:1.15}.detail{font-size:.77rem;color:var(--muted)}.accent{height:3px;width:34px;background:var(--blue);border-radius:5px;margin-bottom:14px}.accent.teal{background:var(--teal)}.accent.amber{background:var(--amber)}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-bottom:16px}.panel{padding:21px;min-width:0}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:17px}.eyebrow{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:5px}.pill{font-size:.72rem;color:#3153c6;background:var(--soft-blue);padding:5px 8px;border-radius:7px;font-weight:750;white-space:nowrap}
+.bars{display:grid;gap:17px}.bar-row{display:grid;grid-template-columns:105px 1fr 58px;gap:12px;align-items:center;font-size:.85rem}.bar-label{color:#445169}.track{height:11px;background:#edf0f6;border-radius:99px;overflow:hidden}.fill{height:100%;background:var(--blue);border-radius:99px}.fill.teal{background:var(--teal)}.bar-value{text-align:right;font-weight:800;font-variant-numeric:tabular-nums}
+.insight{border-top:1px solid var(--line);margin-top:20px;padding-top:15px;color:var(--muted);font-size:.86rem}.insight strong{color:var(--ink)}
+.tenure{display:grid;gap:11px}.tenure-row{display:grid;grid-template-columns:100px 1fr 52px;gap:10px;align-items:center;font-size:.83rem}.tenure-row .track{height:9px}.tenure-row .fill{background:var(--teal)}.tenure-row .bar-value{font-size:.84rem}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.83rem}th,td{padding:11px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{font-size:.73rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:#f8faff}td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}.table-note{font-size:.78rem;color:var(--muted);margin:12px 0 0}.recommendations{display:grid;gap:13px;margin-top:15px}.rec{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}.num-badge{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--soft-blue);color:var(--blue);font-size:.77rem;font-weight:800}.rec p{margin:0;color:var(--muted);font-size:.86rem}.rec strong{color:var(--ink)}
+footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:24px;padding-top:18px;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted)}footer a{color:var(--blue);font-weight:700;text-decoration:none}footer a:hover{text-decoration:underline}
+@media(max-width:850px){.intro{grid-template-columns:1fr}.period{max-width:330px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.grid,.bottom{grid-template-columns:1fr}}
+@media(max-width:500px){.wrap{padding:20px 13px 32px}.top{align-items:flex-start;flex-direction:column}.kpis{gap:9px}.kpi{padding:14px}.value{font-size:1.55rem}.panel{padding:16px}.bar-row{grid-template-columns:86px 1fr 48px;gap:8px}.tenure-row{grid-template-columns:82px 1fr 45px;gap:8px}.note{display:block}.note b{display:block;margin-bottom:4px}}
+</style>
+</head>
+<body><main class="wrap">
+<div class="top"><div class="brand">Portfolio · Data Analytics</div><div class="tag">CASO DEMOSTRATIVO · DATOS SINTÉTICOS</div></div>
+<section class="intro"><div><div class="eyebrow">Customer analytics / Retention</div><h1>Entender la fuga para priorizar la retención.</h1><p class="sub">Análisis descriptivo de una cartera simulada de suscripción. El objetivo es detectar segmentos con mayor churn, dimensionar la exposición mensual y proponer acciones medibles.</p></div><div class="period"><strong>1.200 clientes simulados</strong>Escenario reproducible · semilla 20261028<br>Stack: Python, Pandas y MySQL</div></section>
+<div class="note"><b>Importante: datos simulados</b><span>Las cifras no representan una empresa real. Los patrones se generan con reglas probabilísticas para practicar el análisis; no demuestran causalidad ni constituyen un modelo predictivo validado.</span></div>
+<section class="kpis" aria-label="Indicadores principales">
+<div class="kpi"><div class="accent"></div><div class="label">Clientes analizados</div><div class="value">1.200</div><div class="detail">Base completa del escenario</div></div>
+<div class="kpi"><div class="accent amber"></div><div class="label">Clientes con churn</div><div class="value">248</div><div class="detail">20,7% de la cartera</div></div>
+<div class="kpi"><div class="accent teal"></div><div class="label">Tasa de churn</div><div class="value">20,67%</div><div class="detail">248 de 1.200 clientes</div></div>
+<div class="kpi"><div class="accent"></div><div class="label">Cargo mensual asociado</div><div class="value">$4,87 MM</div><div class="detail">CLP · exposición descriptiva</div></div>
+</section>
+<section class="grid">
+<div class="panel"><div class="panel-head"><div><div class="eyebrow">Segmentación 01</div><h2>Tasa de churn por plan</h2></div><span class="pill">Mayor tasa: Básico</span></div>
+<div class="bars" role="img" aria-label="Tasa de churn: Básico 21,72 por ciento, Estándar 19,87 por ciento, Premium 19,59 por ciento">
+<div class="bar-row"><span class="bar-label">Básico</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="bar-value">21,72%</span></div>
+<div class="bar-row"><span class="bar-label">Estándar</span><div class="track"><div class="fill" style="width:91.5%"></div></div><span class="bar-value">19,87%</span></div>
+<div class="bar-row"><span class="bar-label">Premium</span><div class="track"><div class="fill" style="width:90.2%"></div></div><span class="bar-value">19,59%</span></div>
+</div><div class="insight"><strong>Lectura:</strong> Básico muestra la tasa más alta, pero la diferencia entre planes es acotada. Conviene revisar también volumen de clientes y causas de baja antes de asignar presupuesto.</div></div>
+<div class="panel"><div class="panel-head"><div><div class="eyebrow">Segmentación 02</div><h2>Churn según antigüedad</h2></div><span class="pill">Foco: primeros 6 meses</span></div>
+<div class="tenure" role="img" aria-label="Tasa de churn por antigüedad: 1 a 3 meses 35,48 por ciento; 4 a 6 meses 35 por ciento; 7 a 12 meses 23,19 por ciento; 13 a 24 meses 19,03 por ciento; 25 a 60 meses 18,18 por ciento">
+<div class="tenure-row"><span>1–3 meses</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="bar-value">35,48%</span></div>
+<div class="tenure-row"><span>4–6 meses</span><div class="track"><div class="fill" style="width:98.6%"></div></div><span class="bar-value">35,00%</span></div>
+<div class="tenure-row"><span>7–12 meses</span><div class="track"><div class="fill" style="width:65.4%"></div></div><span class="bar-value">23,19%</span></div>
+<div class="tenure-row"><span>13–24 meses</span><div class="track"><div class="fill" style="width:53.6%"></div></div><span class="bar-value">19,03%</span></div>
+<div class="tenure-row"><span>25–60 meses</span><div class="track"><div class="fill" style="width:51.2%"></div></div><span class="bar-value">18,18%</span></div>
+</div><div class="insight"><strong>Lectura:</strong> los primeros seis meses concentran las tasas más altas. Es una hipótesis para probar onboarding y seguimiento temprano, no prueba de que la antigüedad cause la fuga.</div></div>
+</section>
+<section class="bottom">
+<div class="panel"><div class="eyebrow">Composición de la cartera</div><h2>Volumen y churn por plan</h2><div class="table-wrap"><table><thead><tr><th>Plan</th><th class="num">Clientes</th><th class="num">Churn</th><th class="num">Tasa</th></tr></thead><tbody>
+<tr><td>Básico</td><td class="num">548</td><td class="num">119</td><td class="num">21,72%</td></tr><tr><td>Estándar</td><td class="num">458</td><td class="num">91</td><td class="num">19,87%</td></tr><tr><td>Premium</td><td class="num">194</td><td class="num">38</td><td class="num">19,59%</td></tr><tr><th>Total</th><th class="num">1.200</th><th class="num">248</th><th class="num">20,67%</th></tr>
+</tbody></table></div><p class="table-note">Tasa calculada como clientes con churn / clientes del segmento.</p></div>
+<div class="panel"><div class="eyebrow">Acciones sugeridas</div><h2>De hallazgo a experimento</h2><div class="recommendations">
+<div class="rec"><span class="num-badge">01</span><p><strong>Activación temprana.</strong> Probar contacto de bienvenida y seguimiento durante los primeros seis meses; medir retención por cohorte.</p></div>
+<div class="rec"><span class="num-badge">02</span><p><strong>Resolver fricciones.</strong> Analizar motivos y tiempos de resolución de tickets antes de diseñar acciones por soporte.</p></div>
+<div class="rec"><span class="num-badge">03</span><p><strong>Medir impacto incremental.</strong> Comparar con grupo de control y evaluar retención incremental, margen retenido y coste por cliente.</p></div>
+</div></div>
+</section>
+<footer><span>Desarrollado por Cristopher Valdovinos · Ingeniería Comercial / Data Analytics</span><span><a href="https://github.com/Cristopher-Valdovinos/data-analytics-portfolio">Ver código y consultas SQL en GitHub ↗</a></span></footer>
+</main></body></html>
