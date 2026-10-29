@@ -54,6 +54,8 @@ jobs:
               "outputs/churn_por_plan.csv",
               "outputs/churn_por_antiguedad.csv",
               "outputs/clientes_priorizados.csv",
+              "outputs/graficos/churn_por_plan.png",
+              "outputs/graficos/churn_por_antiguedad.png",
           ]
           for filename in expected:
               path = Path(filename)
@@ -61,5 +63,5 @@ jobs:
 
           kpis = pd.read_csv("outputs/kpis_generales.csv")
           assert int(kpis.loc[0, "clientes"]) == 1200
-          print("Validación OK: dataset, calidad y cuatro entregables.")
+          print("Validación OK: dataset, calidad, cuatro tablas y dos gráficos.")
           PY
