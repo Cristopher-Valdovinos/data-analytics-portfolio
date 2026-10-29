@@ -1,0 +1,106 @@
+name: Validar proyecto de retención
+
+on:
+  push:
+    branches: ["main", "feat/analisis-retencion-clientes"]
+    paths:
+      - "proyectos/analisis-retencion-clientes/**"
+      - ".github/workflows/retencion-clientes.yml"
+  pull_request:
+    paths:
+      - "proyectos/analisis-retencion-clientes/**"
+      - ".github/workflows/retencion-clientes.yml"
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proyectos/analisis-retencion-clientes
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: proyectos/analisis-retencion-clientes/requirements.txt
+
+      - name: Instalar dependencias
+        run: python -m pip install -r requirements.txt
+
+      - name: Generar datos sintéticos
+        run: python src/generar_datos.py
+
+      - name: Ejecutar análisis
+        run: python src/analizar_retencion.py
+
+      - name: Validar entregables
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+
+          data = pd.read_csv("data/clientes.csv")
+          assert len(data) == 1200, f"Se esperaban 1200 filas; se encontraron {len(data)}"
+          assert data["customer_id"].is_unique, "customer_id contiene duplicados"
+          assert data.isna().sum().sum() == 0, "El dataset contiene valores nulos"
+          assert set(data["churned"].unique()).issubset({0, 1}), "churned debe ser binario"
+
+          expected = [
+              "outputs/kpis_generales.csv",
+              "outputs/churn_por_plan.csv",
+              "outputs/churn_por_antiguedad.csv",
+              "outputs/churn_por_retrasos_pago.csv",
+              "outputs/clientes_priorizados.csv",
+              "outputs/dashboard.html",
+              "outputs/graficos/churn_por_plan.png",
+              "outputs/graficos/churn_por_antiguedad.png",
+              "outputs/graficos/churn_por_retrasos_pago.png",
+          ]
+          for filename in expected:
+              path = Path(filename)
+              assert path.exists() and path.stat().st_size > 0, f"Falta entregable: {filename}"
+
+          kpis = pd.read_csv("outputs/kpis_generales.csv")
+          assert int(kpis.loc[0, "clientes"]) == 1200
+          assert int(kpis.loc[0, "clientes_churn"]) == int(data["churned"].sum())
+          assert round(float(kpis.loc[0, "tasa_churn_pct"]), 2) == round(float(data["churned"].mean() * 100), 2)
+
+          by_plan = pd.read_csv("outputs/churn_por_plan.csv")
+          by_tenure = pd.read_csv("outputs/churn_por_antiguedad.csv")
+          by_payment = pd.read_csv("outputs/churn_por_retrasos_pago.csv")
+          prioritized = pd.read_csv("outputs/clientes_priorizados.csv")
+          assert len(by_plan) == 3, "Se esperaban tres planes"
+          assert len(by_tenure) == 5, "Se esperaban cinco tramos de antigüedad"
+          assert len(by_payment) == 3, "Se esperaban tres tramos de retrasos de pago"
+          assert int(by_plan["clientes"].sum()) == 1200
+          assert int(by_plan["clientes_churn"].sum()) == int(data["churned"].sum())
+          assert int(by_tenure["clientes"].sum()) == 1200
+          assert int(by_payment["clientes"].sum()) == 1200
+          assert len(prioritized) <= 100
+          prioritized_score = (
+              (prioritized["support_tickets_90d"] >= 3).astype(int)
+              + (prioritized["payment_delay_count_90d"] >= 2).astype(int)
+              + (prioritized["days_since_last_purchase"] > 45).astype(int)
+              + (prioritized["tenure_months"] <= 6).astype(int)
+          )
+          assert (prioritized_score > 0).all(), "La priorización contiene clientes sin señales de riesgo"
+          assert (prioritized_score == prioritized["priority_score"]).all(), "El score exportado no coincide con las reglas"
+          assert prioritized["priority_score"].is_monotonic_decreasing, "La priorización no está ordenada por score"
+          dashboard = Path("outputs/dashboard.html").read_text(encoding="utf-8")
+          assert "Retención y riesgo de fuga de clientes" in dashboard
+          for chart in ["churn_por_plan.png", "churn_por_antiguedad.png", "churn_por_retrasos_pago.png"]:
+              assert f"graficos/{chart}" in dashboard, f"El dashboard no referencia {chart}"
+          print("Validación OK: calidad, KPIs, segmentos, priorización, tablas, gráficos y dashboard HTML.")
+          PY
+
+      - name: Publicar dashboard y resultados como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-retencion-clientes
+          path: proyectos/analisis-retencion-clientes/outputs/
+          if-no-files-found: error
+          retention-days: 30
