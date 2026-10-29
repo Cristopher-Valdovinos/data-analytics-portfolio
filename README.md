@@ -3,38 +3,44 @@
 Bienvenido a mi repositorio de portafolio de análisis de datos y control de gestión.
 
 ## Sobre mí
-Soy **Cristopher Valdovinos**, Ingeniero Comercial titulado especializado en **Data Analytics**, **Business Intelligence** y **Reporting**. Cuento con experiencia consolidando, limpiando y modelando datos para construir dashboards, reportes e indicadores clave (KPIs) orientados a la toma de decisiones estratégicas.
+Soy **Cristopher Valdovinos**, Ingeniero Comercial titulado con foco en **Data Analytics**, **Business Intelligence** y **Reporting**. Trabajo con consolidación, limpieza y análisis de datos para construir reportes e indicadores orientados a la toma de decisiones.
 
-* 📍 **Ubicación:** Santiago, Chile
-* 💼 **LinkedIn:** [linkedin.com/in/cristopher-valdovinos](https://www.linkedin.com/in/cristopher-valdovinos)
-* ✉️ **Contacto:** cris.valdovinos7@icloud.com
-
----
-
-## 🛠️ Stack Tecnológico
-* **Bases de Datos & SQL:** MySQL, extracción, filtros avanzados, agregaciones y uniones de tablas.
-* **Lenguajes de Análisis:** Python (Pandas, NumPy) para limpieza, transformación y EDA.
-* **Business Intelligence & Reportería:** Power BI (modelado relacional, DAX, visualizaciones), Excel Avanzado (Power Query, tablas dinámicas).
-* **Gestión & Procesos:** Control de gestión, seguimiento de KPIs, trazabilidad y calidad de datos.
+- **Ubicación:** Santiago, Chile
+- **LinkedIn:** [linkedin.com/in/cristopher-valdovinos](https://www.linkedin.com/in/cristopher-valdovinos)
+- **Contacto:** cris.valdovinos7@icloud.com
 
 ---
 
-## 📂 Proyectos Destacados
-
-### 1. [Análisis Comercial, Rentabilidad y KPIs con SQL](proyectos/analisis-comercial-sql/)
-* **Tecnologías:** SQL (MySQL)
-* **Descripción:** Modelado relacional, cálculo de margen bruto, segmentación Pareto de clientes y análisis mensual de ticket promedio para control de gestión comercial.
-* **Carpeta:** [`/proyectos/analisis-comercial-sql/`](proyectos/analisis-comercial-sql/)
-
-### 2. [Pipeline ETL y Limpieza Automatizada con Python](proyectos/etl-limpieza-python/)
-* **Tecnologías:** Python (Pandas, NumPy)
-* **Descripción:** Depuración de datos transaccionales, normalización de strings, manejo de nulos y generación de reportería agrupada para control de gestión.
-* **Carpeta:** [`/proyectos/etl-limpieza-python/`](proyectos/etl-limpieza-python/)
+## Stack tecnológico
+- **SQL:** MySQL, filtros, agregaciones, joins y KPIs.
+- **Python:** Pandas y NumPy para limpieza, transformación y análisis exploratorio.
+- **BI y reportería:** Power BI, Excel avanzado y Power Query.
+- **Gestión:** control de indicadores, calidad de datos y análisis de procesos.
 
 ---
 
-## 🎓 Certificaciones Relevantes
-* Google Data Analytics Professional Certificate *(Google)*
-* Power BI: Análisis, Modelado y Visualización de Datos *(Santander Open Academy)*
-* SQL Aplicado a Negocios y Analytics *(Udemy)*
-* Python para Análisis de Datos (Pandas & NumPy) *(Udemy)*
+## Proyectos destacados
+
+### 1. [Análisis de retención y riesgo de fuga de clientes](proyectos/analisis-retencion-clientes/)
+**Tecnologías:** Python, Pandas, SQL (MySQL).  
+Caso práctico reproducible con datos sintéticos: calcula tasa de churn, compara segmentos, cuantifica ingresos mensuales asociados a clientes con fuga y prioriza clientes para revisión comercial. Incluye validaciones de calidad, consultas SQL y recomendaciones de negocio.
+
+### 2. [Análisis comercial, rentabilidad y KPIs con SQL](proyectos/analisis-comercial-sql/)
+**Tecnologías:** SQL (MySQL).  
+Análisis de margen bruto, segmentación Pareto de clientes y ticket promedio mensual para control de gestión comercial.
+
+### 3. [Pipeline ETL y limpieza automatizada con Python](proyectos/etl-limpieza-python/)
+**Tecnologías:** Python, Pandas y NumPy.  
+Depuración de datos transaccionales, normalización, manejo de nulos y reportería agrupada.
+
+---
+
+## Certificaciones relevantes
+- Google Data Analytics Professional Certificate
+- Power BI: Análisis, Modelado y Visualización de Datos — Santander Open Academy
+- SQL Aplicado a Negocios y Analytics
+- Python para Análisis de Datos (Pandas y NumPy)
+
+---
+
+**Nota sobre los resultados:** el proyecto de retención utiliza datos sintéticos con fines demostrativos. No se presentan sus resultados como evidencia de desempeño de una empresa real.
