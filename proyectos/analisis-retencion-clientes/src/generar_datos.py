@@ -1,6 +1,7 @@
 """Genera un conjunto de datos sintéticos reproducible para el proyecto."""
 from pathlib import Path
 import csv
+import math
 import random
 
 SEED = 20261028
@@ -35,7 +36,7 @@ def main():
             + (0.65 if days_since_last_purchase > 45 else 0)
             + (0.20 if plan == "Basico" else 0)
         )
-        probability = 1 / (1 + (2.718281828 ** (-score)))
+        probability = 1 / (1 + math.exp(-score))
         churned = int(rng.random() < probability)
 
         rows.append({
