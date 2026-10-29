@@ -1,5 +1,6 @@
 """Valida y analiza el dataset sintético de retención de clientes."""
 from pathlib import Path
+from html import escape
 import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
@@ -145,6 +146,61 @@ def main():
     fig.tight_layout()
     fig.savefig(CHART_DIR / "churn_por_retrasos_pago.png", dpi=160, bbox_inches="tight")
     plt.close(fig)
+
+    # Dashboard HTML local, sin servidor ni dependencias externas.
+    kpi = kpis.iloc[0]
+    dashboard_html = f"""<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard | Retención de clientes</title>
+<style>
+:root {{ color-scheme: light; --ink: #172033; --muted: #5d687b; --line: #dce2ea; --paper: #f5f7fb; --card: #fff; }}
+* {{ box-sizing: border-box; }}
+body {{ margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, Segoe UI, sans-serif; }}
+main {{ max-width: 1120px; margin: 0 auto; padding: 32px 20px 48px; }}
+header {{ margin-bottom: 24px; }}
+h1 {{ margin: 0 0 8px; font-size: clamp(1.7rem, 4vw, 2.5rem); }}
+h2 {{ font-size: 1.15rem; margin: 0 0 14px; }}
+p {{ color: var(--muted); }}
+.notice {{ padding: 12px 16px; border: 1px solid var(--line); background: #fff; border-radius: 12px; }}
+.kpis {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin: 22px 0; }}
+.card, section {{ background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }}
+.kpi-label {{ color: var(--muted); font-size: .9rem; }}
+.kpi-value {{ font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; letter-spacing: -.03em; }}
+.charts {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 16px; }}
+img {{ display: block; width: 100%; height: auto; }}
+.table-wrap {{ overflow-x: auto; }}
+table {{ border-collapse: collapse; width: 100%; font-size: .92rem; }}
+th, td {{ text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); }}
+th {{ background: #f0f3f8; }}
+section {{ margin-top: 16px; }}
+footer {{ margin-top: 24px; font-size: .85rem; color: var(--muted); }}
+</style>
+</head>
+<body><main>
+<header><h1>Retención y riesgo de fuga de clientes</h1>
+<p>Resumen descriptivo del escenario sintético de suscripción.</p></header>
+<div class="notice"><strong>Nota metodológica:</strong> datos simulados; no representan clientes reales. La asociación no implica causalidad y los importes expuestos no son pérdidas futuras confirmadas.</div>
+<div class="kpis">
+<div class="card"><div class="kpi-label">Clientes analizados</div><div class="kpi-value">{int(kpi['clientes']):,}</div></div>
+<div class="card"><div class="kpi-label">Clientes con churn</div><div class="kpi-value">{int(kpi['clientes_churn']):,}</div></div>
+<div class="card"><div class="kpi-label">Tasa de churn</div><div class="kpi-value">{float(kpi['tasa_churn_pct']):.2f}%</div></div>
+<div class="card"><div class="kpi-label">Cargo mensual asociado al churn</div><div class="kpi-value">${int(kpi['ingreso_mensual_asociado_churn_clp']):,} CLP</div></div>
+</div>
+<div class="charts">
+<section><h2>Churn por plan</h2><img src="graficos/churn_por_plan.png" alt="Tasa de churn por plan"></section>
+<section><h2>Churn por antigüedad</h2><img src="graficos/churn_por_antiguedad.png" alt="Tasa de churn por antigüedad"></section>
+<section><h2>Churn por retrasos de pago</h2><img src="graficos/churn_por_retrasos_pago.png" alt="Tasa de churn por retrasos de pago"></section>
+</div>
+<section><h2>Resumen por plan</h2><div class="table-wrap">{by_plan.to_html(index=False, border=0, escape=True)}</div></section>
+<section><h2>Resumen por antigüedad</h2><div class="table-wrap">{by_tenure.to_html(index=False, border=0, escape=True)}</div></section>
+<section><h2>Resumen por retrasos de pago</h2><div class="table-wrap">{by_payment_delay.to_html(index=False, border=0, escape=True)}</div></section>
+<footer>Generado automáticamente por Python y pandas. Escenario reproducible con semilla fija; revisar README para definiciones, limitaciones y pasos de ejecución.</footer>
+</main></body></html>
+"""
+    (OUTPUT_DIR / "dashboard.html").write_text(dashboard_html, encoding="utf-8")
 
     print("\n=== KPIs generales ===")
     print(kpis.to_string(index=False))
