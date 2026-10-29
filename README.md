@@ -21,7 +21,7 @@ Soy **Cristopher Valdovinos**, Ingeniero Comercial titulado con foco en **Data A
 
 ## Proyectos destacados
 
-### 1. [Análisis de retención y riesgo de fuga de clientes](proyectos/analisis-retencion-clientes/)
+### 1. [Análisis de retención y riesgo de fuga de clientes](proyectos/analisis-retencion-clientes/)\n**Vista ejecutiva para reclutadores:** [abrir dashboard visual](docs/retencion-clientes.html) · [ver código fuente](proyectos/analisis-retencion-clientes/src/analizar_retencion.py).
 **Tecnologías:** Python, Pandas, SQL (MySQL).  
 Caso práctico reproducible con datos sintéticos: calcula tasa de churn, compara segmentos, cuantifica ingresos mensuales asociados a clientes con fuga y prioriza clientes para revisión comercial. Incluye validaciones de calidad, consultas SQL y recomendaciones de negocio.
 
