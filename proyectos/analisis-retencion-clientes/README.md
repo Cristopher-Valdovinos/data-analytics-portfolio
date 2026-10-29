@@ -38,7 +38,7 @@ python src/generar_datos.py
 python src/analizar_retencion.py
 ```
 
-El generador crea `data/clientes.csv` con 1.200 registros reproducibles. El análisis imprime KPIs, guarda tablas agregadas en `outputs/` y genera dos gráficos PNG en `outputs/graficos/`. No requiere API ni credenciales.
+El generador crea `data/clientes.csv` con 1.200 registros reproducibles. El análisis imprime KPIs, guarda tablas agregadas en `outputs/` y genera tres gráficos PNG en `outputs/graficos/`. No requiere API ni credenciales.
 
 ## Definiciones
 - **Churn:** cliente marcado como dado de baja en el periodo simulado (`churned = 1`).
@@ -61,7 +61,7 @@ Con la semilla `20261028`, el conjunto genera estos resultados reproducibles:
 ### Hallazgos descriptivos
 
 - **La antigüedad inicial concentra una tasa de churn más alta:** 35,48% en clientes de 1–3 meses y 35,00% en clientes de 4–6 meses, frente a 18,18% en el grupo de 25–60 meses.
-- **Los retrasos de pago aparecen asociados a una mayor tasa de churn en esta simulación:** 35,04% para clientes con dos o más retrasos en 90 días. Este dato describe una asociación del dataset sintético; no prueba causalidad.
+- **Retrasos de pago:** el script calcula y exporta la tasa de churn para clientes con cero, uno y dos o más retrasos en 90 días. El resultado debe interpretarse como asociación del dataset sintético, no como evidencia causal.
 - **El plan Básico tiene la mayor tasa por plan:** 21,72%, frente a 19,87% en Estándar y 19,59% en Premium.
 - **El cargo mensual asociado al churn no es una pérdida futura confirmada:** representa la suma de los cargos de los clientes etiquetados con churn en el escenario simulado.
 
@@ -85,9 +85,11 @@ Con la semilla `20261028`, el conjunto genera estos resultados reproducibles:
 - `outputs/kpis_generales.csv`
 - `outputs/churn_por_plan.csv`
 - `outputs/churn_por_antiguedad.csv`
+- `outputs/churn_por_retrasos_pago.csv`
 - `outputs/clientes_priorizados.csv`
 - `outputs/graficos/churn_por_plan.png`
 - `outputs/graficos/churn_por_antiguedad.png`
+- `outputs/graficos/churn_por_retrasos_pago.png`
 
 ## Próximas mejoras
 1. Incorporar datos reales anonimizados y diccionario de datos.
