@@ -65,5 +65,20 @@ jobs:
 
           kpis = pd.read_csv("outputs/kpis_generales.csv")
           assert int(kpis.loc[0, "clientes"]) == 1200
-          print("Validación OK: dataset, calidad, cinco tablas y tres gráficos.")
+          assert int(kpis.loc[0, "clientes_churn"]) == int(data["churned"].sum())
+          assert round(float(kpis.loc[0, "tasa_churn_pct"]), 2) == round(float(data["churned"].mean() * 100), 2)
+
+          by_plan = pd.read_csv("outputs/churn_por_plan.csv")
+          by_tenure = pd.read_csv("outputs/churn_por_antiguedad.csv")
+          by_payment = pd.read_csv("outputs/churn_por_retrasos_pago.csv")
+          prioritized = pd.read_csv("outputs/clientes_priorizados.csv")
+          assert len(by_plan) == 3, "Se esperaban tres planes"
+          assert len(by_tenure) == 5, "Se esperaban cinco tramos de antigüedad"
+          assert len(by_payment) == 3, "Se esperaban tres tramos de retrasos de pago"
+          assert int(by_plan["clientes"].sum()) == 1200
+          assert int(by_plan["clientes_churn"].sum()) == int(data["churned"].sum())
+          assert int(by_tenure["clientes"].sum()) == 1200
+          assert int(by_payment["clientes"].sum()) == 1200
+          assert len(prioritized) <= 100
+          print("Validación OK: calidad, consistencia de KPIs, segmentos, tablas y gráficos.")
           PY
