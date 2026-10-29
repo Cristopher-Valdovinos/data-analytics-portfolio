@@ -21,7 +21,8 @@ Una empresa de suscripción necesita entender qué perfiles presentan mayor fuga
 analisis-retencion-clientes/
 ├── README.md
 ├── requirements.txt
-├── data/                  # Se genera localmente; no contiene datos reales
+├── data/                  # Dataset sintético generado localmente
+├── outputs/               # Tablas, gráficos y dashboard generados
 ├── sql/
 │   └── consultas_retencion.sql
 └── src/
@@ -38,7 +39,9 @@ python src/generar_datos.py
 python src/analizar_retencion.py
 ```
 
-El generador crea `data/clientes.csv` con 1.200 registros reproducibles. El análisis imprime KPIs, guarda tablas agregadas en `outputs/` y genera tres gráficos PNG en `outputs/graficos/` y un dashboard HTML local en `outputs/dashboard.html`. Abre ese archivo en el navegador después de ejecutar el análisis. No requiere API ni credenciales.
+El generador crea `data/clientes.csv` con 1.200 registros reproducibles. El análisis imprime KPIs, guarda tablas agregadas en `outputs/`, genera tres gráficos PNG en `outputs/graficos/` y crea un dashboard HTML en `outputs/dashboard.html`. Abre ese archivo en el navegador después de ejecutar el análisis; conserva la carpeta `graficos` junto al HTML para que se vean los gráficos. No requiere API ni credenciales.
+
+En cada ejecución exitosa de GitHub Actions se publica el artefacto `dashboard-retencion-clientes`, descargable desde la sección **Artifacts** de la ejecución. Incluye el HTML, sus gráficos y las tablas CSV; el artefacto expira a los 30 días.
 
 ## Definiciones
 - **Churn:** cliente marcado como dado de baja en el periodo simulado (`churned = 1`).
