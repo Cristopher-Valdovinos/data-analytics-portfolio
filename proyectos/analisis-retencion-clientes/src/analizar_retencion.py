@@ -64,7 +64,7 @@ def main():
         .agg(clientes=("customer_id", "count"), clientes_churn=("churned", "sum"))
     )
     by_tenure["tasa_churn_pct"] = (
-        by_tenure["clientes_churn"] / by_tenure["clientes"].replace(0, pd.NA) * 100
+        by_tenure["clientes_churn"] / by_tenure["clientes"].where(by_tenure["clientes"] != 0) * 100
     ).round(2)
 
     # Regla de priorización explicable; no es un modelo de machine learning.
