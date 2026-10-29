@@ -1,6 +1,5 @@
 """Valida y analiza el dataset sintético de retención de clientes."""
 from pathlib import Path
-from html import escape
 import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
@@ -99,7 +98,7 @@ def main():
         df["priority_score"], bins=[-1, 1, 2, 4],
         labels=["Bajo", "Medio", "Alto"],
     )
-    prioritized = df.sort_values(
+    prioritized = df.loc[df["priority_score"] > 0].sort_values(
         ["priority_score", "monthly_fee_clp"], ascending=[False, False]
     ).head(100)
 
