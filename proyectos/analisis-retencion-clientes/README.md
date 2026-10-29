@@ -46,6 +46,34 @@ El generador crea `data/clientes.csv` con 1.200 registros reproducibles. El aná
 - **Ingreso mensual en riesgo:** suma del cargo mensual de clientes con churn, útil como exposición descriptiva; no equivale a pérdida futura confirmada.
 - **Segmento de riesgo operativo:** regla transparente basada en tickets de soporte, retrasos de pago y días desde la última compra. Es una priorización exploratoria, no un modelo predictivo validado.
 
+## Resultados del escenario simulado
+
+Con la semilla `20261028`, el conjunto genera estos resultados reproducibles:
+
+| Indicador | Resultado |
+|---|---:|
+| Clientes simulados | 1.200 |
+| Clientes con churn | 248 |
+| Tasa general de churn | 20,67% |
+| Cargo mensual asociado a clientes con churn | $4.868.520 CLP |
+| Cargo mensual promedio por cliente | $19.975 CLP |
+
+### Hallazgos descriptivos
+
+- **La antigüedad inicial concentra una tasa de churn más alta:** 35,48% en clientes de 1–3 meses y 35,00% en clientes de 4–6 meses, frente a 18,18% en el grupo de 25–60 meses.
+- **Los retrasos de pago aparecen asociados a una mayor tasa de churn en esta simulación:** 35,04% para clientes con dos o más retrasos en 90 días. Este dato describe una asociación del dataset sintético; no prueba causalidad.
+- **El plan Básico tiene la mayor tasa por plan:** 21,72%, frente a 19,87% en Estándar y 19,59% en Premium.
+- **El cargo mensual asociado al churn no es una pérdida futura confirmada:** representa la suma de los cargos de los clientes etiquetados con churn en el escenario simulado.
+
+> **Limitación metodológica importante:** las etiquetas de churn se generaron mediante una regla probabilística que utiliza variables como antigüedad, tickets de soporte, retrasos de pago y actividad reciente. Por tanto, estos resultados sirven para demostrar un flujo de análisis reproducible, no para afirmar que esas relaciones existen en una empresa real ni para validar un modelo predictivo.
+
+### Recomendaciones de negocio para probar
+
+1. Diseñar un contacto de bienvenida y seguimiento durante los primeros seis meses, con medición de retención por cohorte.
+2. Revisar motivos y resolución de tickets de soporte antes de definir acciones específicas.
+3. Probar recordatorios de pago y seguimiento preventivo para clientes con retrasos, midiendo el resultado contra un grupo de control.
+4. Evaluar cada iniciativa mediante tasa de retención incremental, margen retenido y coste por cliente retenido; no solo por número de contactos.
+
 ## Criterios de calidad
 - Identificador único por cliente.
 - Validación de nulos, duplicados y rangos básicos.
