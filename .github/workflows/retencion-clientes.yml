@@ -81,7 +81,19 @@ jobs:
           assert int(by_tenure["clientes"].sum()) == 1200
           assert int(by_payment["clientes"].sum()) == 1200
           assert len(prioritized) <= 100
-          print("Validación OK: calidad, KPIs, segmentos, tablas, gráficos y dashboard HTML.")
+          priority_score = (
+              (data["support_tickets_90d"] >= 3).astype(int)
+              + (data["payment_delay_count_90d"] >= 2).astype(int)
+              + (data["days_since_last_purchase"] > 45).astype(int)
+              + (data["tenure_months"] <= 6).astype(int)
+          )
+          assert (priority_score.loc[prioritized.index] > 0).all(), "La priorización contiene clientes sin señales de riesgo"
+          assert prioritized["priority_score"].is_monotonic_decreasing, "La priorización no está ordenada por score"
+          dashboard = Path("outputs/dashboard.html").read_text(encoding="utf-8")
+          assert "Retención y riesgo de fuga de clientes" in dashboard
+          for chart in ["churn_por_plan.png", "churn_por_antiguedad.png", "churn_por_retrasos_pago.png"]:
+              assert f"graficos/{chart}" in dashboard, f"El dashboard no referencia {chart}"
+          print("Validación OK: calidad, KPIs, segmentos, priorización, tablas, gráficos y dashboard HTML.")
           PY
 
       - name: Publicar dashboard y resultados como artefacto
