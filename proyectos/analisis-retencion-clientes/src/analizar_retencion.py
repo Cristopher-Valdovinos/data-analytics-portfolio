@@ -72,6 +72,21 @@ def main():
         by_tenure["clientes_churn"] / by_tenure["clientes"].where(by_tenure["clientes"] != 0) * 100
     ).round(2)
 
+    # Segmentación adicional para revisar la asociación entre retrasos de pago y churn.
+    df["payment_delay_bucket"] = pd.cut(
+        df["payment_delay_count_90d"],
+        bins=[-1, 0, 1, 99],
+        labels=["0 retrasos", "1 retraso", "2+ retrasos"],
+    )
+    by_payment_delay = (
+        df.groupby("payment_delay_bucket", observed=False, as_index=False)
+        .agg(clientes=("customer_id", "count"), clientes_churn=("churned", "sum"))
+    )
+    by_payment_delay["tasa_churn_pct"] = (
+        by_payment_delay["clientes_churn"]
+        / by_payment_delay["clientes"].where(by_payment_delay["clientes"] != 0) * 100
+    ).round(2)
+
     # Regla de priorización explicable; no es un modelo de machine learning.
     df["priority_score"] = (
         (df["support_tickets_90d"] >= 3).astype(int)
@@ -90,6 +105,7 @@ def main():
     kpis.to_csv(OUTPUT_DIR / "kpis_generales.csv", index=False)
     by_plan.to_csv(OUTPUT_DIR / "churn_por_plan.csv", index=False)
     by_tenure.to_csv(OUTPUT_DIR / "churn_por_antiguedad.csv", index=False)
+    by_payment_delay.to_csv(OUTPUT_DIR / "churn_por_retrasos_pago.csv", index=False)
     prioritized.to_csv(OUTPUT_DIR / "clientes_priorizados.csv", index=False)
 
     # Gráficos reproducibles para el README o una presentación de portafolio.
@@ -118,12 +134,26 @@ def main():
     fig.savefig(CHART_DIR / "churn_por_antiguedad.png", dpi=160, bbox_inches="tight")
     plt.close(fig)
 
+    fig, ax = plt.subplots(figsize=(8, 5))
+    delay_plot = by_payment_delay.dropna(subset=["tasa_churn_pct"])
+    bars = ax.bar(delay_plot["payment_delay_bucket"].astype(str), delay_plot["tasa_churn_pct"])
+    ax.bar_label(bars, fmt="%.1f%%", padding=3)
+    ax.set_title("Tasa de churn por retrasos de pago")
+    ax.set_xlabel("Retrasos de pago en los últimos 90 días")
+    ax.set_ylabel("Tasa de churn (%)")
+    ax.set_ylim(0, max(delay_plot["tasa_churn_pct"].max() * 1.18, 5))
+    fig.tight_layout()
+    fig.savefig(CHART_DIR / "churn_por_retrasos_pago.png", dpi=160, bbox_inches="tight")
+    plt.close(fig)
+
     print("\n=== KPIs generales ===")
     print(kpis.to_string(index=False))
     print("\n=== Churn por plan ===")
     print(by_plan.to_string(index=False))
     print("\n=== Churn por antigüedad ===")
     print(by_tenure.to_string(index=False))
+    print("\n=== Churn por retrasos de pago ===")
+    print(by_payment_delay.to_string(index=False))
     print(f"\nResultados guardados en: {OUTPUT_DIR}")
 
 
