@@ -1,7 +1,19 @@
 -- Proyecto: Análisis de retención y riesgo de fuga
 -- Motor: MySQL 8+
--- Cargar data/clientes.csv en una tabla llamada clientes.
--- Los datos son sintéticos. Ingreso asociado a churn es descriptivo, no pérdida futura confirmada.
+-- Datos sintéticos: no representan clientes ni resultados reales.
+-- Importa data/clientes.csv en la tabla clientes después de crearla.
+
+CREATE TABLE IF NOT EXISTS clientes (
+    customer_id INT NOT NULL PRIMARY KEY,
+    plan VARCHAR(20) NOT NULL,
+    tenure_months TINYINT UNSIGNED NOT NULL,
+    monthly_fee_clp INT UNSIGNED NOT NULL,
+    support_tickets_90d TINYINT UNSIGNED NOT NULL,
+    payment_delay_count_90d TINYINT UNSIGNED NOT NULL,
+    days_since_last_purchase SMALLINT UNSIGNED NOT NULL,
+    churned TINYINT NOT NULL,
+    CONSTRAINT chk_clientes_churned CHECK (churned IN (0, 1))
+);
 
 -- 1. KPIs ejecutivos
 SELECT
