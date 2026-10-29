@@ -1,0 +1,65 @@
+name: Validar proyecto de retención
+
+on:
+  push:
+    branches: ["main", "feat/analisis-retencion-clientes"]
+    paths:
+      - "proyectos/analisis-retencion-clientes/**"
+      - ".github/workflows/retencion-clientes.yml"
+  pull_request:
+    paths:
+      - "proyectos/analisis-retencion-clientes/**"
+      - ".github/workflows/retencion-clientes.yml"
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proyectos/analisis-retencion-clientes
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: proyectos/analisis-retencion-clientes/requirements.txt
+
+      - name: Instalar dependencias
+        run: python -m pip install -r requirements.txt
+
+      - name: Generar datos sintéticos
+        run: python src/generar_datos.py
+
+      - name: Ejecutar análisis
+        run: python src/analizar_retencion.py
+
+      - name: Validar entregables
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+
+          data = pd.read_csv("data/clientes.csv")
+          assert len(data) == 1200, f"Se esperaban 1200 filas; se encontraron {len(data)}"
+          assert data["customer_id"].is_unique, "customer_id contiene duplicados"
+          assert data.isna().sum().sum() == 0, "El dataset contiene valores nulos"
+          assert set(data["churned"].unique()).issubset({0, 1}), "churned debe ser binario"
+
+          expected = [
+              "outputs/kpis_generales.csv",
+              "outputs/churn_por_plan.csv",
+              "outputs/churn_por_antiguedad.csv",
+              "outputs/clientes_priorizados.csv",
+          ]
+          for filename in expected:
+              path = Path(filename)
+              assert path.exists() and path.stat().st_size > 0, f"Falta entregable: {filename}"
+
+          kpis = pd.read_csv("outputs/kpis_generales.csv")
+          assert int(kpis.loc[0, "clientes"]) == 1200
+          print("Validación OK: dataset, calidad y cuatro entregables.")
+          PY
