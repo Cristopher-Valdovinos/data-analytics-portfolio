@@ -83,3 +83,11 @@ jobs:
           assert len(prioritized) <= 100
           print("Validación OK: calidad, KPIs, segmentos, tablas, gráficos y dashboard HTML.")
           PY
+
+      - name: Publicar dashboard y resultados como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-retencion-clientes
+          path: proyectos/analisis-retencion-clientes/outputs/
+          if-no-files-found: error
+          retention-days: 30
