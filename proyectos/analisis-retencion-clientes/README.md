@@ -38,7 +38,7 @@ python src/generar_datos.py
 python src/analizar_retencion.py
 ```
 
-El generador crea `data/clientes.csv` con 1.200 registros reproducibles. El análisis imprime KPIs y guarda tablas agregadas en `outputs/`. No requiere API ni credenciales.
+El generador crea `data/clientes.csv` con 1.200 registros reproducibles. El análisis imprime KPIs, guarda tablas agregadas en `outputs/` y genera dos gráficos PNG en `outputs/graficos/`. No requiere API ni credenciales.
 
 ## Definiciones
 - **Churn:** cliente marcado como dado de baja en el periodo simulado (`churned = 1`).
@@ -86,6 +86,8 @@ Con la semilla `20261028`, el conjunto genera estos resultados reproducibles:
 - `outputs/churn_por_plan.csv`
 - `outputs/churn_por_antiguedad.csv`
 - `outputs/clientes_priorizados.csv`
+- `outputs/graficos/churn_por_plan.png`
+- `outputs/graficos/churn_por_antiguedad.png`
 
 ## Próximas mejoras
 1. Incorporar datos reales anonimizados y diccionario de datos.
