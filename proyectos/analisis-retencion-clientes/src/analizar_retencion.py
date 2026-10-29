@@ -1,6 +1,9 @@
 """Valida y analiza el dataset sintético de retención de clientes."""
 from pathlib import Path
 import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_FILE = ROOT / "data" / "clientes.csv"
@@ -30,6 +33,8 @@ def main():
         raise ValueError("Antigüedad y cargo mensual no pueden ser negativos.")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    CHART_DIR = OUTPUT_DIR / "graficos"
+    CHART_DIR.mkdir(parents=True, exist_ok=True)
     total = len(df)
     churned = int(df["churned"].sum())
     churn_rate = churned / total if total else 0
@@ -86,6 +91,32 @@ def main():
     by_plan.to_csv(OUTPUT_DIR / "churn_por_plan.csv", index=False)
     by_tenure.to_csv(OUTPUT_DIR / "churn_por_antiguedad.csv", index=False)
     prioritized.to_csv(OUTPUT_DIR / "clientes_priorizados.csv", index=False)
+
+    # Gráficos reproducibles para el README o una presentación de portafolio.
+    fig, ax = plt.subplots(figsize=(8, 5))
+    plan_plot = by_plan.sort_values("tasa_churn_pct", ascending=False)
+    bars = ax.bar(plan_plot["plan"], plan_plot["tasa_churn_pct"])
+    ax.bar_label(bars, fmt="%.1f%%", padding=3)
+    ax.set_title("Tasa de churn por plan")
+    ax.set_xlabel("Plan")
+    ax.set_ylabel("Tasa de churn (%)")
+    ax.set_ylim(0, max(plan_plot["tasa_churn_pct"].max() * 1.18, 5))
+    fig.tight_layout()
+    fig.savefig(CHART_DIR / "churn_por_plan.png", dpi=160, bbox_inches="tight")
+    plt.close(fig)
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+    tenure_plot = by_tenure.dropna(subset=["tasa_churn_pct"])
+    bars = ax.bar(tenure_plot["tenure_bucket"].astype(str), tenure_plot["tasa_churn_pct"])
+    ax.bar_label(bars, fmt="%.1f%%", padding=3)
+    ax.set_title("Tasa de churn por antigüedad")
+    ax.set_xlabel("Antigüedad del cliente")
+    ax.set_ylabel("Tasa de churn (%)")
+    ax.tick_params(axis="x", rotation=20)
+    ax.set_ylim(0, max(tenure_plot["tasa_churn_pct"].max() * 1.18, 5))
+    fig.tight_layout()
+    fig.savefig(CHART_DIR / "churn_por_antiguedad.png", dpi=160, bbox_inches="tight")
+    plt.close(fig)
 
     print("\n=== KPIs generales ===")
     print(kpis.to_string(index=False))
