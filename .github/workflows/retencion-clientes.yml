@@ -81,13 +81,14 @@ jobs:
           assert int(by_tenure["clientes"].sum()) == 1200
           assert int(by_payment["clientes"].sum()) == 1200
           assert len(prioritized) <= 100
-          priority_score = (
-              (data["support_tickets_90d"] >= 3).astype(int)
-              + (data["payment_delay_count_90d"] >= 2).astype(int)
-              + (data["days_since_last_purchase"] > 45).astype(int)
-              + (data["tenure_months"] <= 6).astype(int)
+          prioritized_score = (
+              (prioritized["support_tickets_90d"] >= 3).astype(int)
+              + (prioritized["payment_delay_count_90d"] >= 2).astype(int)
+              + (prioritized["days_since_last_purchase"] > 45).astype(int)
+              + (prioritized["tenure_months"] <= 6).astype(int)
           )
-          assert (priority_score.loc[prioritized.index] > 0).all(), "La priorización contiene clientes sin señales de riesgo"
+          assert (prioritized_score > 0).all(), "La priorización contiene clientes sin señales de riesgo"
+          assert (prioritized_score == prioritized["priority_score"]).all(), "El score exportado no coincide con las reglas"
           assert prioritized["priority_score"].is_monotonic_decreasing, "La priorización no está ordenada por score"
           dashboard = Path("outputs/dashboard.html").read_text(encoding="utf-8")
           assert "Retención y riesgo de fuga de clientes" in dashboard
