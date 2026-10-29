@@ -55,6 +55,7 @@ jobs:
               "outputs/churn_por_antiguedad.csv",
               "outputs/churn_por_retrasos_pago.csv",
               "outputs/clientes_priorizados.csv",
+              "outputs/dashboard.html",
               "outputs/graficos/churn_por_plan.png",
               "outputs/graficos/churn_por_antiguedad.png",
               "outputs/graficos/churn_por_retrasos_pago.png",
@@ -80,5 +81,5 @@ jobs:
           assert int(by_tenure["clientes"].sum()) == 1200
           assert int(by_payment["clientes"].sum()) == 1200
           assert len(prioritized) <= 100
-          print("Validación OK: calidad, consistencia de KPIs, segmentos, tablas y gráficos.")
+          print("Validación OK: calidad, KPIs, segmentos, tablas, gráficos y dashboard HTML.")
           PY
