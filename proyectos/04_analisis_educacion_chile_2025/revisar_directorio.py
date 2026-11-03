@@ -5,7 +5,7 @@ pd.set_option("display.max_columns", None)
 pd.set_option("display.width", 250)
 
 carpeta = Path(__file__).parent
-ruta = carpeta / "20250926_Directorio_Oficial_EE_2025_20250430_WEB.csv"
+ruta = carpeta / "Directorio-Oficial-EE-2025" / "20250926_Directorio_Oficial_EE_2025_20250430_WEB.csv"
 
 df = pd.read_csv(ruta, sep=";", encoding="utf-8-sig", decimal=",")
 

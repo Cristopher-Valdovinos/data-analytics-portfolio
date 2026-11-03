@@ -2,10 +2,11 @@ import pandas as pd
 from pathlib import Path
 
 carpeta = Path(__file__).parent
+datos = carpeta / "Directorio-Oficial-EE-2025"
 
 # 1. Leer el archivo generado anteriormente (separado por ; y decimal con ,)
 df = pd.read_csv(
-    carpeta / "df_consolidado_establecimientos_2025.csv",
+    datos / "df_consolidado_establecimientos_2025.csv",
     sep=";",
     decimal=","
 )

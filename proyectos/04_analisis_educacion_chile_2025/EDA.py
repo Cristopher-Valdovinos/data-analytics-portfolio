@@ -2,8 +2,9 @@ import pandas as pd
 from pathlib import Path
 
 carpeta = Path(__file__).parent
+datos = carpeta / "Directorio-Oficial-EE-2025"
 df = pd.read_csv(
-    carpeta / "df_consolidado_establecimientos_2025.csv",
+    datos / "df_consolidado_establecimientos_2025.csv",
     sep=";",
     decimal=",",
     encoding="utf-8-sig"

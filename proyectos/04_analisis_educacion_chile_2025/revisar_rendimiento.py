@@ -3,16 +3,17 @@ import numpy as np
 import pandas as pd
 
 carpeta = Path(__file__).parent
+datos = carpeta / "Directorio-Oficial-EE-2025"
 
 # 1. Cargar datos
 print("Cargando bases...")
 rend = pd.read_csv(
-    carpeta / "20260303_Resumen_Rendimiento_2025_20260131.csv",
+    datos / "20260303_Resumen_Rendimiento_2025_20260131.csv",
     sep=",",
     encoding="utf-8-sig",
 )
 dire = pd.read_csv(
-    carpeta / "20250926_Directorio_Oficial_EE_2025_20250430_WEB.csv",
+    datos / "20250926_Directorio_Oficial_EE_2025_20250430_WEB.csv",
     sep=";",
     encoding="utf-8-sig",
     decimal=",",
@@ -122,7 +123,7 @@ print(
 
 # Guardar base procesada lista para análisis/BI
 df_final.to_csv(
-    carpeta / "df_consolidado_establecimientos_2025.csv",
+    datos / "df_consolidado_establecimientos_2025.csv",
     index=False,
     sep=";",
     decimal=",",
