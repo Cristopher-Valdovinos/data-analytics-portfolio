@@ -7,7 +7,7 @@ carpeta = Path(__file__).parent
 
 # 1. Cargar datos consolidados
 df = pd.read_csv(
-    carpeta / "df_consolidado_establecimientos_2025.csv",
+    carpeta / "Directorio-Oficial-EE-2025" / "df_consolidado_establecimientos_2025.csv",
     sep=";",
     decimal=",",
     encoding="utf-8-sig",

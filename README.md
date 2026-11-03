@@ -12,9 +12,9 @@ Soy **Cristopher Valdovinos**, Ingeniero Comercial titulado, con foco en **Data 
 
 ## Stack tecnológico
 
-- **SQL:** MySQL, filtros, agregaciones, joins y KPIs.
+- **SQL:** MySQL y Google BigQuery: filtros, agregaciones, joins, funciones de ventana y KPIs.
 - **Python:** Pandas y NumPy para limpieza, transformación y análisis exploratorio.
-- **BI y reportería:** Power BI, Excel avanzado y Power Query.
+- **BI y reportería:** Power BI (DAX), Excel avanzado y Power Query.
 - **Gestión:** indicadores, calidad de datos y análisis de procesos.
 
 ## Proyectos destacados
@@ -30,7 +30,7 @@ Caso reproducible con datos sintéticos: calcula tasa de churn, compara segmento
 
 ### 2. Análisis comercial, rentabilidad y KPIs con SQL
 
-- [Ver documentación](proyectos/analisis-comercial-sql/LEEME)
+- [Ver documentación](proyectos/analisis-comercial-sql/README.md)
 - [Ver consultas SQL](proyectos/analisis-comercial-sql/analisis_ventas.sql)
 
 Análisis de margen bruto, segmentación Pareto de clientes y ticket promedio mensual para control de gestión comercial.
@@ -42,7 +42,8 @@ Análisis de margen bruto, segmentación Pareto de clientes y ticket promedio me
 
 Ejemplo de depuración de datos transaccionales, normalización, manejo de nulos y reportería agrupada.
 
-### 4. Análisis de Rendimiento Escolar y Asistencia en Chile (2025) ###
+### 4. Análisis de Rendimiento Escolar y Asistencia en Chile (2025)
+
 - [Ver documentación y dashboard interactivo](proyectos/04_analisis_educacion_chile_2025/README.md)
 - [Ver código Python](proyectos/04_analisis_educacion_chile_2025/EDA.py)
 - [Ver consultas SQL](proyectos/04_analisis_educacion_chile_2025/consultas_bigquery.sql)

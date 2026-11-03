@@ -74,34 +74,58 @@ DIVIDE(
 - **Tabla Operacional de Detalle:** Directorio navegable con RBD, nombre del colegio, comuna y métricas clave.
 ---
 
-## 📂 Estructura del Repositorio
+## 📂 Estructura del Proyecto
 
 ```text
-proyecto-4-educacion-chile-2025/
+04_analisis_educacion_chile_2025/
+├── Directorio-Oficial-EE-2025/                 # Datos abiertos MINEDUC y base consolidada
+│   ├── 20250926_Directorio_Oficial_EE_2025_20250430_WEB.csv
+│   ├── 20260303_Resumen_Rendimiento_2025_20260131.csv
+│   ├── df_consolidado_establecimientos_2025.csv  # Resultado de revisar_rendimiento.py (sep. ";" y decimal ",")
+│   ├── ER_*.pdf                                  # Diccionarios de datos oficiales
+│   └── Frecuencias_Directorio_Oficial_EE_2025.xlsx
+├── revisar_directorio.py                       # Exploración del directorio oficial
+├── revisar_rendimiento.py                      # Cruce directorio + rendimiento y generación de la base consolidada
+├── EDA.py                                      # Análisis exploratorio (nulos, estadísticos, outliers)
+├── graficar_correlacion.py                     # Gráfico de dispersión asistencia vs. reprobación
+├── convertir_bq.py                             # Exporta la base en formato BigQuery (sep. "," y decimal ".")
+├── df_consolidado_bq.csv                       # Dataset limpio y normalizado para BigQuery
 ├── consultas_bigquery.sql                      # Scripts SQL (Benchmark, Window Functions, Outliers)
-├── convertir_bq.py                             # Script de preparación y exportación a formato BigQuery
 ├── dashboard_educacion_chile_2025.pbix         # Archivo maestro de Power BI Desktop
-├── df_consolidado_bq.csv                       # Dataset limpio y normalizado
 ├── dispersion_asistencia_reprobacion.png       # Gráfico EDA de dispersión estadística
 ├── Captura dashboard_educacion_chile_2025.png  # Captura del reporte interactivo
-├── EDA.py                                      # Análisis exploratorio inicial de datos
-├── README.md                                   # Documentación técnica y ejecutiva
-└── scripts_apoyo/
-    ├── graficar_correlacion.py
-    ├── revisar_directorio.py
-    └── revisar_rendimiento.py
-```
-```
-## 🚀 Instrucciones de Reproducción
-1. **Clonar el repositorio:**
-   ```bash
-  git clone https://github.com/tu-usuario/proyecto-4-educacion-chile-2025.git
-   cd proyecto-4-educacion-chile-2025
+└── README.md                                   # Documentación técnica y ejecutiva
 ```
 
-2. **Carga y análisis SQL (Google BigQuery):**
+---
+
+## 🚀 Instrucciones de Reproducción
+
+1. **Clonar el repositorio e instalar dependencias:**
+
+   ```bash
+   git clone https://github.com/Cristopher-Valdovinos/data-analytics-portfolio.git
+   cd data-analytics-portfolio/proyectos/04_analisis_educacion_chile_2025
+   pip install pandas numpy matplotlib seaborn
+   ```
+
+2. **Regenerar la base consolidada y exportarla para BigQuery (opcional):**
+
+   ```bash
+   python revisar_rendimiento.py   # genera Directorio-Oficial-EE-2025/df_consolidado_establecimientos_2025.csv
+   python convertir_bq.py          # genera df_consolidado_bq.csv
+   ```
+
+3. **Exploración y gráficos:**
+
+   ```bash
+   python EDA.py
+   python graficar_correlacion.py
+   ```
+
+4. **Carga y análisis SQL (Google BigQuery):**
    - Importar `df_consolidado_bq.csv` en un dataset de BigQuery.
    - Ejecutar las consultas contenidas en `consultas_bigquery.sql`.
 
-3. **Exploración del Dashboard:**
+5. **Exploración del Dashboard:**
    - Abrir `dashboard_educacion_chile_2025.pbix` en Microsoft Power BI Desktop para interactuar con los filtros y visualizaciones.
