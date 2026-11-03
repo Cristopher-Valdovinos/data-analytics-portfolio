@@ -1,0 +1,11 @@
+# Configuración local de VS Code
+.vscode/
+
+# Archivos temporales y de sistema
+*.tmp
+Thumbs.db
+.DS_Store
+
+# Caché de Python
+__pycache__/
+*.pyc

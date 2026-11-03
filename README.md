@@ -42,6 +42,13 @@ Análisis de margen bruto, segmentación Pareto de clientes y ticket promedio me
 
 Ejemplo de depuración de datos transaccionales, normalización, manejo de nulos y reportería agrupada.
 
+###4. Análisis de Rendimiento Escolar y Asistencia en Chile (2025)###
+- [Ver documentación y dashboard interactivo](proyectos/04_analisis_educacion_chile_2025/README.md)
+- [Ver código Python](proyectos/04_analisis_educacion_chile_2025/EDA.py)
+- [Ver consultas SQL](proyectos/04_analisis_educacion_chile_2025/consultas_bigquery.sql)
+
+Pipeline analítico end-to-end con datos abiertos del MINEDUC. Incluye procesamiento de datos nulos con Python (Pandas/NumPy), modelado en Google BigQuery, y un tablero de control en Power BI evaluando cobertura nacional, asistencia ponderada y brechas de reprobación.
+
 ## Certificaciones relevantes
 
 - Google Data Analytics Professional Certificate
